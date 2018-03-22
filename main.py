@@ -2,6 +2,7 @@ from pymodm import connect
 from flask import Flask, jsonify, request
 import models
 import datetime
+import HR_calcs
 
 app = Flask(__name__)
 
@@ -27,6 +28,14 @@ def add_heart_rate():
     user.heart_rate_times.append(time)  # append the current time to the user's list of heart rate times
     user.save()  # save the user to the database
     return jsonify("Data recorded")
+
+
+@app.route("/api/heart_rate/average/<user_email>", methods=["GET"])
+def calc_avg_hr(user_email):
+    user = models.User.objects.raw({"_id": user_email}).first()
+    hr_measurements = user.heart_rate
+    avg = HR_calcs.HR_avg(hr_measurements)
+    return jsonify(avg)
 
 
 def create_user(email, age, heart_rate, time):
@@ -56,13 +65,9 @@ def print_user(user_email):
     print(user.email)
     print(user.heart_rate)
     print(user.heart_rate_times)
-    return jsonify("Success")
-
-
-
-
+    return jsonify(user.heart_rate)
 
 if __name__ == "__main__":
     create_user(email="suyash@suyashkumar.com", age=24, heart_rate=60, time=datetime.datetime.now())  # we should only do this once, otherwise will overwrite existing user
-    add_heart_rate("suyash@suyashkumar.com", 60, datetime.datetime.now())
-    print_user("suyash@suyashkumar.com")
+    create_user(email="ans52@duke.edu", age=21, heart_rate=60, time = datetime.datetime.now())
+
