@@ -4,11 +4,23 @@ time_format = '%Y-%m-%d %H:%M:%S.%f'
 
 
 def hr_avg(heart_rates):
+    """
+    Calculates the average heart of an input list
+    :param heart_rates:
+    :return: avg
+    """
+
     avg = numpy.mean(heart_rates)
     return avg
 
 
 def find_cutoff_index(time_input, heart_rate_times):
+    """
+    Finds the index in a time array corresponding to the specified time cutoff
+    :param time_input:
+    :param heart_rate_times:
+    :return: cutoff_index
+    """
     time_delta = []
     for reading in heart_rate_times:
         time_delta.append(abs(reading - time_input))
@@ -18,6 +30,13 @@ def find_cutoff_index(time_input, heart_rate_times):
 
 
 def check_tachycardia(age, avg_hr):
+    """
+    Checks if patient data indicates tachycardia
+    :param age:
+    :param avg_hr:
+    :return: tach
+    """
+    
     if 0 <= age <= 1 and avg_hr > 159:
         tach = 1
     elif 1 < age <= 2 and avg_hr > 151:

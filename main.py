@@ -11,6 +11,11 @@ connect("mongodb://localhost:27017/db")
 
 @app.route("/api/heart_rate", methods=["POST"])
 def add_hr_reading():
+    """
+    Adds new heart rate readings to users already in the database and
+    creates entries for users not already in the database
+    :return:
+    """
     r = request.get_json()
     email = r["user_email"]
     heart_rate = r["heart_rate"]
@@ -28,6 +33,12 @@ def add_hr_reading():
 
 @app.route("/api/heart_rate/average/<user_email>", methods=["GET"])
 def calc_avg_hr(user_email):
+    """
+    Calculates the average of all heart rate measurements taken for an individual
+    :param user_email:
+    :return: avg
+    """
+
     user = models.User.objects.raw({"_id": user_email}).first()
     hr_measurements = user.heart_rate
     avg = HR_calcs.hr_avg(hr_measurements)
@@ -43,6 +54,7 @@ def create_user(email, age, heart_rate, time):
     :param heart_rate: number initial heart_rate of this new user
     :param time: datetime of the initial heart rate measurement
     """
+
     u = models.User(email, age, [], [])  # create a new User instance
     u.heart_rate.append(heart_rate)  # add initial heart rate
     u.heart_rate_times.append(time)  # add initial heart rate time
@@ -56,6 +68,7 @@ def print_user(user_email):
     :param email: str email of the user of interest
     :return:
     """
+
     email = user_email
     user = models.User.objects.raw({"_id": email}).first()  # Get the first user where _id=email
     print(user.email)
@@ -66,6 +79,12 @@ def print_user(user_email):
 
 @app.route("/api/heart_rate/interval_average", methods=["POST"])
 def calc_avg_hr_interval():
+    """"
+    Calculates the average heart of a patient's readings after a specified time
+    and determines whether patient has tachycardia
+    :return: Avg HR
+    :return: Tachycardia
+    """
     r = request.get_json()
     email = r["user_email"]
     time_input_string = r["heart_rate_average_since"]
@@ -78,17 +97,17 @@ def calc_avg_hr_interval():
     interval_list = heart_rate[cutoff_index:]
     interval_avg = HR_calcs.hr_avg(interval_list)
 
-    check_tach = HR_calcs.check_tachycardia(age,interval_avg)
+    check_tach = HR_calcs.check_tachycardia(age, interval_avg)
     if check_tach == 1:
         tach_output = "Yes"
     else:
         tach_output = "No"
 
-    return jsonify({"Avg HR":interval_avg,
-                   "Tachycardia":tach_output})
+    return jsonify({"Avg HR": interval_avg,
+                   "Tachycardia": tach_output})
 
 
-def add_heart_rate(email, heart_rate,time):
+def add_heart_rate(email, heart_rate, time):
     """
     Appends a heart_rate measurement at a specified time to the user specified by
     email. It is assumed that the user specified by email exists already.
@@ -102,6 +121,7 @@ def add_heart_rate(email, heart_rate,time):
     user.heart_rate_times.append(time)  # append the current time to the user's list of heart rate times
     user.save()  # save the user to the database
     return jsonify("Data recorded")
+
 
 if __name__ == "__main__":
     create_user(email="suyash@suyashkumar.com", age=24, heart_rate=60, time=datetime.datetime.now())
