@@ -34,7 +34,8 @@ def add_hr_reading():
 @app.route("/api/heart_rate/average/<user_email>", methods=["GET"])
 def calc_avg_hr(user_email):
     """
-    Calculates the average of all heart rate measurements taken for an individual
+    Calculates the average of all heart rate measurements taken for an
+    individual
     :param user_email:
     :return: avg
     """
@@ -47,8 +48,9 @@ def calc_avg_hr(user_email):
 
 def create_user(email, age, heart_rate, time):
     """
-    Creates a user with the specified email and age. If the user already exists in the DB this WILL
-    overwrite that user. It also adds the specified heart_rate to the user
+    Creates a user with the specified email and age. If the user already
+    exists in the DB this WILL overwrite that user. It also adds the
+    specified heart_rate to the user
     :param email: str email of the new user
     :param age: number age of the new user
     :param heart_rate: number initial heart_rate of this new user
@@ -70,7 +72,7 @@ def print_user(user_email):
     """
 
     email = user_email
-    user = models.User.objects.raw({"_id": email}).first()  # Get the first user where _id=email
+    user = models.User.objects.raw({"_id": email}).first()
     print(user.email)
     print(user.heart_rate)
     print(user.heart_rate_times)
@@ -80,15 +82,16 @@ def print_user(user_email):
 @app.route("/api/heart_rate/interval_average", methods=["POST"])
 def calc_avg_hr_interval():
     """"
-    Calculates the average heart of a patient's readings after a specified time
-    and determines whether patient has tachycardia
+    Calculates the average heart of a patient's readings after a specified
+    time and determines whether patient has tachycardia
     :return: Avg HR
     :return: Tachycardia
     """
     r = request.get_json()
     email = r["user_email"]
     time_input_string = r["heart_rate_average_since"]
-    time_input = datetime.datetime.strptime(time_input_string, '%Y-%m-%d %H:%M:%S.%f')  # Parse time string
+    time_input = datetime.datetime.strptime(time_input_string,
+                                            '%Y-%m-%d %H:%M:%S.%f')
     user = models.User.objects.raw({"_id":email}).first()
     heart_rate_times = user.heart_rate_times
     heart_rate = user.heart_rate
@@ -109,21 +112,23 @@ def calc_avg_hr_interval():
 
 def add_heart_rate(email, heart_rate, time):
     """
-    Appends a heart_rate measurement at a specified time to the user specified by
-    email. It is assumed that the user specified by email exists already.
+    Appends a heart_rate measurement at a specified time to the user
+    specified by email. It is assumed that the user specified by email
+    exists already.
     :param email: str email of the user
     :param heart_rate: number heart_rate measurement of the user
     :param time: the datetime of the heart_rate measurement
     """
 
-    user = models.User.objects.raw({"_id": email}).first()  # Get the first user where _id=email
-    user.heart_rate.append(heart_rate)  # Append the heart_rate to the user's list of heart rates
-    user.heart_rate_times.append(time)  # append the current time to the user's list of heart rate times
-    user.save()  # save the user to the database
+    user = models.User.objects.raw({"_id": email}).first()
+    user.heart_rate.append(heart_rate)
+    user.heart_rate_times.append(time)
+    user.save()
     return jsonify("Data recorded")
 
 
 if __name__ == "__main__":
-    create_user(email="suyash@suyashkumar.com", age=24, heart_rate=60, time=datetime.datetime.now())
-    create_user(email="ans52@duke.edu", age=21, heart_rate=60, time=datetime.datetime.now())
-    
+    create_user(email="suyash@suyashkumar.com", age=24, heart_rate=60,
+                time=datetime.datetime.now())
+    create_user(email="ans52@duke.edu", age=21, heart_rate=60,
+                time=datetime.datetime.now())
