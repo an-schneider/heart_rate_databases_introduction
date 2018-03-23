@@ -73,10 +73,19 @@ def calc_avg_hr_interval():
     user = models.User.objects.raw({"_id":email}).first()
     heart_rate_times = user.heart_rate_times
     heart_rate = user.heart_rate
+    age = user.age
     cutoff_index = HR_calcs.find_cutoff_index(time_input,heart_rate_times)
     interval_list = heart_rate[cutoff_index:]
     interval_avg = HR_calcs.hr_avg(interval_list)
-    return jsonify(interval_avg)
+
+    check_tach = HR_calcs.check_tachycardia(age,interval_avg)
+    if check_tach == 1:
+        tach_output = "Yes"
+    else:
+        tach_output = "No"
+
+    return jsonify({"Avg HR":interval_avg,
+                   "Tachycardia":tach_output})
 
 
 def add_heart_rate(email, heart_rate,time):
