@@ -92,11 +92,11 @@ def calc_avg_hr_interval():
     time_input_string = r["heart_rate_average_since"]
     time_input = datetime.datetime.strptime(time_input_string,
                                             '%Y-%m-%d %H:%M:%S.%f')
-    user = models.User.objects.raw({"_id":email}).first()
+    user = models.User.objects.raw({"_id": email}).first()
     heart_rate_times = user.heart_rate_times
     heart_rate = user.heart_rate
     age = user.age
-    cutoff_index = HR_calcs.find_cutoff_index(time_input,heart_rate_times)
+    cutoff_index = HR_calcs.find_cutoff_index(time_input, heart_rate_times)
     interval_list = heart_rate[cutoff_index:]
     interval_avg = HR_calcs.hr_avg(interval_list)
 
