@@ -5,7 +5,7 @@ time_format = '%Y-%m-%d %H:%M:%S.%f'
 
 
 def test_hr_calcs():
-    test_HR = [60, 65, 70, 65, 70]
+    test_hr = [60, 65, 70, 65, 70]
     test_times = [datetime.datetime.strptime("2018-03-09 11:00:36.372339", time_format),
                   datetime.datetime.strptime("2018-03-09 18:00:44.413444", time_format),
                   datetime.datetime.strptime("2018-03-10 09:21:00.459253", time_format),
@@ -15,7 +15,7 @@ def test_hr_calcs():
     test_cutoff2 = datetime.datetime.strptime("2018-03-10 20:45:48.000000", time_format)
 
     # Test HR Avg
-    assert HR_calcs.hr_avg(test_HR) == 66
+    assert HR_calcs.hr_avg(test_hr) == 66
 
     # Test find_cutoff_index
     assert HR_calcs.find_cutoff_index(test_cutoff1, test_times) == 3

@@ -23,11 +23,11 @@ def add_hr_reading():
     time = datetime.datetime.now()
 
     try:
-        add_heart_rate(email, heart_rate,time)
+        add_heart_rate(email, heart_rate, time)
         output = 'Data added'
     except DoesNotExist:
         create_user(email, age, heart_rate, time)
-        output = 'User created, data addd'
+        output = 'User created, data add'
     return output
 
 
@@ -65,7 +65,7 @@ def create_user(email, age, heart_rate, time):
 def print_user(user_email):
     """
     Prints the user with the specified email
-    :param email: str email of the user of interest
+    :param user_email: str email of the user of interest
     :return:
     """
 
@@ -88,7 +88,7 @@ def calc_avg_hr_interval():
     r = request.get_json()
     email = r["user_email"]
     time_input_string = r["heart_rate_average_since"]
-    time_input = datetime.datetime.strptime(time_input_string, '%Y-%m-%d %H:%M:%S.%f') # Parse time string
+    time_input = datetime.datetime.strptime(time_input_string, '%Y-%m-%d %H:%M:%S.%f')  # Parse time string
     user = models.User.objects.raw({"_id":email}).first()
     heart_rate_times = user.heart_rate_times
     heart_rate = user.heart_rate

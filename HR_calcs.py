@@ -22,10 +22,17 @@ def find_cutoff_index(time_input, heart_rate_times):
     :return: cutoff_index
     """
     time_delta = []
+    time_delta_sign = []
     for reading in heart_rate_times:
-        time_delta.append(abs(reading - time_input))
+        delta = reading - time_input
+        time_delta.append(abs(delta))
+        time_delta_sign.append(numpy.sign(delta.total_seconds()))
     cutoff_value = numpy.min(time_delta)  # Finds delta closest to zero
-    cutoff_index = time_delta.index(cutoff_value)
+    index = time_delta.index(cutoff_value)
+    if time_delta_sign[index] == 1.:
+        cutoff_index = index
+    else:
+        cutoff_index = index + 1
     return cutoff_index
 
 
@@ -36,7 +43,7 @@ def check_tachycardia(age, avg_hr):
     :param avg_hr:
     :return: tach
     """
-    
+
     if 0 <= age <= 1 and avg_hr > 159:
         tach = 1
     elif 1 < age <= 2 and avg_hr > 151:
@@ -56,8 +63,6 @@ def check_tachycardia(age, avg_hr):
     return tach
 
 
-test=check_tachycardia(3, 135)
-print(test)
 
 
 
