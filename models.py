@@ -1,5 +1,4 @@
 from pymodm import fields, MongoModel
-import datetime
 
 
 class User(MongoModel):
