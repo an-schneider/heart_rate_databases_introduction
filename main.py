@@ -47,7 +47,7 @@ def calc_avg_hr(user_email):
     user = models.User.objects.raw({"_id": user_email}).first()
     hr_measurements = user.heart_rate
     avg = HR_calcs.hr_avg(hr_measurements)
-    return jsonify(avg)
+    return jsonify({"Avg HR (BPM)": avg})
 
 
 def create_user(email, age, heart_rate, time):
@@ -83,7 +83,8 @@ def print_user(user_email):
     print(user.email)
     print(user.heart_rate)
     print(user.heart_rate_times)
-    return jsonify(user.heart_rate)
+    HR = user.heart_rate
+    return jsonify({"Heart Rates (BPM)": HR})
 
 
 @app.route("/api/heart_rate/interval_average", methods=["POST"])
@@ -117,7 +118,7 @@ def calc_avg_hr_interval():
     else:
         tach_output = "No"
 
-    return jsonify({"Avg HR": interval_avg,
+    return jsonify({"Avg HR since specified time (BPM)": interval_avg,
                    "Tachycardia": tach_output})
 
 
