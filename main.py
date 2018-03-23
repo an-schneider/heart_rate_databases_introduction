@@ -17,6 +17,10 @@ def add_hr_reading():
     :return:
     """
     r = request.get_json()
+    try:
+        check_add_hr_reading_input(r)
+    except TypeError:
+        return "Status: 400, More input information required"
     email = r["user_email"]
     heart_rate = r["heart_rate"]
     age = r["user_age"]
@@ -24,10 +28,10 @@ def add_hr_reading():
 
     try:
         add_heart_rate(email, heart_rate, time)
-        output = 'Data added'
+        output = 'Status: 202, Data added'
     except DoesNotExist:
         create_user(email, age, heart_rate, time)
-        output = 'User created, data add'
+        output = 'Status: 201, User created'
     return output
 
 
@@ -72,11 +76,14 @@ def print_user(user_email):
     """
 
     email = user_email
-    user = models.User.objects.raw({"_id": email}).first()
+    try:
+        user = models.User.objects.raw({"_id": email}).first()
+    except DoesNotExist:
+        return "Status: 500, User does not exist"
     print(user.email)
     print(user.heart_rate)
     print(user.heart_rate_times)
-    return jsonify(user.heart_rate),
+    return jsonify(user.heart_rate)
 
 
 @app.route("/api/heart_rate/interval_average", methods=["POST"])
@@ -92,6 +99,10 @@ def calc_avg_hr_interval():
     time_input_string = r["heart_rate_average_since"]
     time_input = datetime.datetime.strptime(time_input_string,
                                             '%Y-%m-%d %H:%M:%S.%f')
+    try:
+        check_calc_avg_hr_interval_input(r)
+    except TypeError:
+        return "Status Error 400: More input information is required"
     user = models.User.objects.raw({"_id": email}).first()
     heart_rate_times = user.heart_rate_times
     heart_rate = user.heart_rate
@@ -125,6 +136,34 @@ def add_heart_rate(email, heart_rate, time):
     user.heart_rate_times.append(time)
     user.save()
     return jsonify("Data recorded")
+
+
+def check_add_hr_reading_input(input_dict):
+    if "user_email" in input_dict.keys():
+        pass
+    else:
+        raise TypeError('user_email must be specified')
+    if "heart_rate" in input_dict.keys():
+        pass
+    else:
+        raise TypeError('heart_rate must be specified')
+    if "user_age" in input_dict.keys():
+        pass
+    else:
+        raise TypeError('user_age must be specified')
+    pass
+
+
+def check_calc_avg_hr_interval_input(input_dict):
+    if "user_email" in input_dict.keys():
+        pass
+    else:
+        raise TypeError('user_email must be specified')
+    if "heart_rate_average_since" in input_dict.keys():
+        pass
+    else:
+        raise TypeError('heart_rate_average_since must be specified')
+    pass
 
 
 if __name__ == "__main__":
