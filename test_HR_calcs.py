@@ -34,5 +34,3 @@ def test_hr_calcs():
 
 
 test_hr_calcs()
-
-

@@ -61,11 +61,3 @@ def check_tachycardia(age, avg_hr):
     else:
         tach = 0
     return tach
-
-
-
-
-
-
-
-

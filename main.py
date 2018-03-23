@@ -126,3 +126,4 @@ def add_heart_rate(email, heart_rate, time):
 if __name__ == "__main__":
     create_user(email="suyash@suyashkumar.com", age=24, heart_rate=60, time=datetime.datetime.now())
     create_user(email="ans52@duke.edu", age=21, heart_rate=60, time=datetime.datetime.now())
+    
