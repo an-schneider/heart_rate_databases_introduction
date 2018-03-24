@@ -20,7 +20,7 @@ def add_hr_reading():
     try:
         check_add_hr_reading_input(r)
     except TypeError:
-        return "Status: 400, More input information required"
+        return "Status: 400, More input information required", 400
     email = r["user_email"]
     heart_rate = r["heart_rate"]
     age = r["user_age"]
@@ -29,10 +29,12 @@ def add_hr_reading():
     try:
         add_heart_rate(email, heart_rate, time)
         output = 'Status: 202, Data added'
+        code = 202
     except DoesNotExist:
         create_user(email, age, heart_rate, time)
         output = 'Status: 201, User created'
-    return output
+        code = 201
+    return output, code
 
 
 @app.route("/api/heart_rate/average/<user_email>", methods=["GET"])
@@ -47,7 +49,7 @@ def calc_avg_hr(user_email):
     user = models.User.objects.raw({"_id": user_email}).first()
     hr_measurements = user.heart_rate
     avg = HR_calcs.hr_avg(hr_measurements)
-    return jsonify({"Avg HR (BPM)": avg})
+    return jsonify({"Avg HR (BPM)": avg}), 200
 
 
 def create_user(email, age, heart_rate, time):
@@ -84,7 +86,7 @@ def print_user(user_email):
     print(user.heart_rate)
     print(user.heart_rate_times)
     HR = user.heart_rate
-    return jsonify({"Heart Rates (BPM)": HR})
+    return jsonify({"Heart Rates (BPM)": HR}), 200
 
 
 @app.route("/api/heart_rate/interval_average", methods=["POST"])
@@ -103,7 +105,7 @@ def calc_avg_hr_interval():
     try:
         check_calc_avg_hr_interval_input(r)
     except TypeError:
-        return "Status Error 400: More input information is required"
+        return "Status Error 400: More input information is required", 400
     user = models.User.objects.raw({"_id": email}).first()
     heart_rate_times = user.heart_rate_times
     heart_rate = user.heart_rate
@@ -119,7 +121,7 @@ def calc_avg_hr_interval():
         tach_output = "No"
 
     return jsonify({"Avg HR since specified time (BPM)": interval_avg,
-                   "Tachycardia": tach_output})
+                   "Tachycardia": tach_output}), 200
 
 
 def add_heart_rate(email, heart_rate, time):
