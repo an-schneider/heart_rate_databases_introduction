@@ -21,6 +21,8 @@ def add_hr_reading():
         check_add_hr_reading_input(r)
     except ValueError:
         return "Status: 400, More input information required", 400
+    check_int("heart_rate", r)
+    check_int("user_age", r)
     email = r["user_email"]
     heart_rate = r["heart_rate"]
     age = r["user_age"]
@@ -168,12 +170,15 @@ def check_calc_avg_hr_interval_input(input_dict):
         raise ValueError('heart_rate_average_since must be specified')
     pass
 
-def check_int(key,input_dict):
-    for entry in input_dict[key]
-        if entry.type() == int
-            pass
-        else:
-            raise TypeError
+
+def check_int(key, input_dict):
+    value = input_dict[key]
+    if type(value) != (int or float):
+        raise TypeError("Numerical values must be floats or integers "), 400
+    else:
+        pass
+
+
 if __name__ == "__main__":
     create_user(email="suyash@suyashkumar.com", age=24, heart_rate=60,
                 time=datetime.datetime.now())
