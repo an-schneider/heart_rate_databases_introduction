@@ -19,7 +19,7 @@ def add_hr_reading():
     r = request.get_json()
     try:
         check_add_hr_reading_input(r)
-    except TypeError:
+    except ValueError:
         return "Status: 400, More input information required", 400
     email = r["user_email"]
     heart_rate = r["heart_rate"]
@@ -104,7 +104,7 @@ def calc_avg_hr_interval():
                                             '%Y-%m-%d %H:%M:%S.%f')
     try:
         check_calc_avg_hr_interval_input(r)
-    except TypeError:
+    except ValueError:
         return "Status Error 400: More input information is required", 400
     user = models.User.objects.raw({"_id": email}).first()
     heart_rate_times = user.heart_rate_times
@@ -145,15 +145,15 @@ def check_add_hr_reading_input(input_dict):
     if "user_email" in input_dict.keys():
         pass
     else:
-        raise TypeError('user_email must be specified')
+        raise ValueError('user_email must be specified')
     if "heart_rate" in input_dict.keys():
         pass
     else:
-        raise TypeError('heart_rate must be specified')
+        raise ValueError('heart_rate must be specified')
     if "user_age" in input_dict.keys():
         pass
     else:
-        raise TypeError('user_age must be specified')
+        raise ValueError('user_age must be specified')
     pass
 
 
@@ -161,14 +161,19 @@ def check_calc_avg_hr_interval_input(input_dict):
     if "user_email" in input_dict.keys():
         pass
     else:
-        raise TypeError('user_email must be specified')
+        raise ValueError('user_email must be specified')
     if "heart_rate_average_since" in input_dict.keys():
         pass
     else:
-        raise TypeError('heart_rate_average_since must be specified')
+        raise ValueError('heart_rate_average_since must be specified')
     pass
 
-
+def check_int(key,input_dict):
+    for entry in input_dict[key]
+        if entry.type() == int
+            pass
+        else:
+            raise TypeError
 if __name__ == "__main__":
     create_user(email="suyash@suyashkumar.com", age=24, heart_rate=60,
                 time=datetime.datetime.now())
