@@ -21,8 +21,13 @@ def add_hr_reading():
         check_add_hr_reading_input(r)
     except ValueError:
         return "Status: 400, More input information required", 400
-    check_int("heart_rate", r)
-    check_int("user_age", r)
+    try:
+        check_int("heart_rate", r)
+        check_int("user_age", r)
+    except TypeError:
+        return "Status: 400, Heart rate and age must be input as integers " \
+               "or floats"
+
     email = r["user_email"]
     heart_rate = r["heart_rate"]
     age = r["user_age"]
@@ -174,7 +179,7 @@ def check_calc_avg_hr_interval_input(input_dict):
 def check_int(key, input_dict):
     value = input_dict[key]
     if type(value) != (int or float):
-        raise TypeError("Numerical values must be floats or integers "), 400
+        raise TypeError("Numerical values must be floats or integers ")
     else:
         pass
 
