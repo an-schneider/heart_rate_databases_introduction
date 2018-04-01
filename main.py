@@ -4,8 +4,10 @@ from pymodm.errors import DoesNotExist
 import models
 import datetime
 import HR_calcs
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 connect("mongodb://vcm-3607.vm.duke.edu:27107/HR_monitor")
 
 
