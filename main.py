@@ -6,7 +6,7 @@ import datetime
 import HR_calcs
 
 app = Flask(__name__)
-connect("mongodb://localhost:27017/db")
+connect("mongodb://vcm:m4rmipruge@vcm-3607.vm.duke.edu/db")
 
 
 @app.route("/api/heart_rate", methods=["POST"])
