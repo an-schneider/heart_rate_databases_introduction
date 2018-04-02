@@ -8,7 +8,7 @@ import HR_calcs
 
 app = Flask(__name__)
 CORS(app)
-connect("mongodb://vcm-3607.vm.duke.edu:27107/mydb")
+connect("mongodb://vcm-3607.vm.duke.edu:27017/mydb")
 
 
 @app.route("/api/heart_rate", methods=["POST"])
