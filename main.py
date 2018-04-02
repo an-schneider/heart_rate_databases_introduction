@@ -4,7 +4,7 @@ from pymodm.errors import DoesNotExist
 import models
 import datetime
 import HR_calcs
-from flask_cors import CORS
+from flask-cors import CORS
 
 app = Flask(__name__)
 CORS(app)
