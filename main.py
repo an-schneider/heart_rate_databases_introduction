@@ -1,13 +1,15 @@
-from pymodm import connect
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)
+
 from pymodm.errors import DoesNotExist
 import models
 import datetime
 import HR_calcs
+from pymodm import connect
 
-app = Flask(__name__)
-CORS(app)
 connect("mongodb://localhost:27017/db")
 
 
