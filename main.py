@@ -95,7 +95,8 @@ def print_user(user_email):
     print(user.heart_rate)
     print(user.heart_rate_times)
     HR = user.heart_rate
-    return jsonify({"Heart_Rates": HR}), 200
+    Times = user.heart_rate_times
+    return jsonify({"Heart_Rates": HR, "Times": Times}), 200
 
 
 @app.route("/api/heart_rate/interval_average", methods=["POST"])
