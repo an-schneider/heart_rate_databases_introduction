@@ -3,7 +3,7 @@ Starter codebase for BME590 Databases Assignment (which can be found [here](http
 
 # Heart Rate Database Info
 ## About this software
-This program utilize Flask and MongoDB to create a database to which a patient's heart rate measurements can be added and stored. The heart rate readings, as well as the times at which they were added can then be retrieved. A patient's total average heart rate as well as the average heart rate since a specified time can also be retrieved. The program will also return whether or not the patient's average heart rate would be considered tachycardic for their age. If a heart rate reading is added for a user not already in the database, a new user will be created. 
+This program utilizes Flask and MongoDB to create a database to which a patient's heart rate measurements can be added and stored. The heart rate readings, as well as the times at which they were added can then be retrieved. A patient's total average heart rate as well as the average heart rate since a specified time can also be retrieved. The program will also return whether or not the patient's average heart rate would be considered tachycardic for their age. If a heart rate reading is added for a user not already in the database, a new user will be created. 
 
 ## Set-Up Instructions
 First, begin running your mongodb database, which can be done with the following command:
