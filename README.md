@@ -21,6 +21,33 @@ after changing directories to 'heart_rate_databases_introduction'. Activate your
 ```source env/bin/activate```
 Finally, run your program with 
 ```python main.py```
-and it will be ready to accept GET and POST requests/ 
+and it will be ready to accept GET and POST requests/
+
+## Using the Database
+### POST Requests
+* `POST /api/heart_rate` with
+  ```sh
+  {
+      "user_email": "ans52@duke.edu",
+      "user_age": 21, // in years
+      "heart_rate": 60
+  }
+  ```
+  This will add a heart rate measurement with a timestamp to the specified user. If the specified user is not already in the data, they will be added.
+  
+  * `POST /api/heart_rate/interval_average` with 
+  ```
+  {
+      "user_email": "ans52@duke.edu",
+      "heart_rate_average_since": "2018-03-09 11:00:36.372339" // date string
+  }
+  ```
+This will return the user's average heart rates since the specified date. This will also return whether or not this average heart rate is tachycardic given the patient's age. The data will be output as a JSON. 
+
+### GET Requests
+* `GET /api/heart_rate/<user_email>`
+This will return all recorded heart rates for the specified user, as well as the time at which each measurement was recorded.
+* `GET /api/heart_rate/average/<user_email>` 
+This will return the average heart rate for the specified user over all recorded time points. 
 ## Other Notes
 Time inputs must be in "YYYY-MM-DD hh:mm:ss.ssssss" format where hours are expressed as 24 hour time
